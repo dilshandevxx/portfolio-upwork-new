@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-outfit);
+
+  --color-background: #020617; /* Deep Navy */
+  --color-foreground: #f8fafc; /* Slate 50 */
+  
+  --color-primary: #ffffff;
+  --color-secondary: #94a3b8; /* Slate 400 */
+  --color-accent: #60a5fa; /* Blue 400 - Electric Blue */
+  --color-glass: rgba(15, 23, 42, 0.6); /* Slate 900 with opacity */
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Base Styles */
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    @apply bg-white/20 text-white;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
