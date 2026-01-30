@@ -1,8 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { motion, Variants } from "framer-motion";
-import { fadeInUp, staggerContainer } from "@/lib/animations"; 
+
+const LiquidBackground = dynamic(() => import("@/components/ui/LiquidBackground"), { ssr: false });
 
 const heroVariants: Variants = {
   hidden: { opacity: 0 },
@@ -28,10 +30,7 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px] mix-blend-screen opacity-30 animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px] mix-blend-screen opacity-20" />
-      </div>
+      <LiquidBackground />
 
       <div className="container relative z-10 px-6 text-center">
         <motion.div
