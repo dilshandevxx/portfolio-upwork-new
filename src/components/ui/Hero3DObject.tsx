@@ -88,7 +88,7 @@ export default function Hero3DObject() {
         
         {/* Immersive Environment */}
         <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-        <Cloud opacity={0.3} speed={0.2} width={10} depth={1.5} segments={20} position={[0, -2, -5]} color="#001133" />
+        <Cloud opacity={0.3} speed={0.2} bounds={[10, 2, 2]} segments={20} position={[0, -2, -5]} color="#001133" />
         
         {/* Foreground Sparkles */}
         <Sparkles count={100} scale={10} size={2} speed={0.4} opacity={0.8} color="#00afff" />

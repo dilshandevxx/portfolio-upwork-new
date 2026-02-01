@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import CustomCursor from "@/components/ui/CustomCursor";
+import Preloader from "@/components/ui/Preloader";
 
 export default function RootLayout({
   children,
@@ -32,6 +33,7 @@ export default function RootLayout({
           spaceMono.variable
         )}
       >
+        <Preloader />
         <SmoothScroll />
         <CustomCursor />
         {children}
