@@ -1,85 +1,137 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRef, useState } from "react";
 
 const projects = [
   {
     title: "E-Commerce Reform",
-    category: "Web Design / Development",
-    image: "/project1.jpg", // Placeholder
-    year: "2025"
+    category: "Web Design",
+    src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
+    year: "2025",
+    href: "/work/ecommerce"
   },
   {
     title: "Finance Dashboard",
     category: "Product Design",
-    image: "/project2.jpg", // Placeholder
-    year: "2024"
+    src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop",
+    year: "2024",
+    href: "/work/finance"
   },
   {
     title: "Travel App",
-    category: "Mobile App",
-    image: "/project3.jpg", // Placeholder
-    year: "2024"
+    category: "Mobile",
+    src: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2621&auto=format&fit=crop",
+    year: "2024",
+    href: "/work/travel"
   },
   {
     title: "AI Startup",
-    category: "Landing Page",
-    image: "/project4.jpg", // Placeholder
-    year: "2025"
+    category: "Development",
+    src: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2565&auto=format&fit=crop",
+    year: "2025",
+    href: "/work/ai"
   }
 ];
 
 export function Projects() {
+  const [activeProject, setActiveProject] = useState<number | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth spring physics for the floating image
+  const springConfig = { stiffness: 150, damping: 15, mass: 0.1 };
+  const x = useSpring(mouseX, springConfig);
+  const y = useSpring(mouseY, springConfig);
+
+  // Rotate based on X velocity could be cool too, but keeping it simple for now
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    // We want the image to be relative to the viewport or container? 
+    // Fixed viewport is easiest for "floating anywhere".
+    mouseX.set(clientX);
+    mouseY.set(clientY);
+  };
+
   return (
-    <section id="projects" className="py-32 bg-background relative">
+    <section 
+        id="projects" 
+        className="py-32 bg-background relative z-10"
+        onMouseMove={handleMouseMove}
+        ref={ref}
+    >
       <div className="container px-6 mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-          <div>
-            <span className="text-accent text-sm font-medium tracking-wider uppercase mb-2 block">Selected Work</span>
-            <h2 className="text-4xl md:text-5xl font-bold font-display">Featured Projects</h2>
-          </div>
-          <Button variant="outline" className="hidden md:flex gap-2">
-            View All Work <ArrowUpRight size={16} />
-          </Button>
+        {/* Header */}
+        <div className="flex flex-col mb-20 gap-2">
+            <h2 className="text-4xl md:text-6xl font-display font-bold">
+                Selected <span className="font-serif italic text-white/50">Works</span>
+            </h2>
+            <div className="w-full h-[1px] bg-white/10 mt-8" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="group cursor-pointer"
-            >
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-6 bg-secondary/10 border border-white/5">
-                {/* Placeholder for Image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 flex items-center justify-center text-white/20 font-display text-4xl font-bold opacity-30 group-hover:opacity-100 transition-opacity">
-                    {project.title[0]}
-                </div>
-              </div>
-              
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-2xl font-bold font-display mb-1 group-hover:text-accent transition-colors">{project.title}</h3>
-                  <p className="text-white/60">{project.category}</p>
-                </div>
-                <span className="text-white/40 text-sm">{project.year}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        
-        <div className="mt-12 flex md:hidden justify-center">
-             <Button variant="outline" className="gap-2">
-                View All Work <ArrowUpRight size={16} />
-            </Button>
+        {/* Project List */}
+        <div className="flex flex-col">
+            {projects.map((project, index) => (
+                <Link 
+                    key={index} 
+                    href={project.href}
+                    className="group border-b border-white/5 py-12 flex flex-col md:flex-row justify-between items-start md:items-center cursor-none"
+                    onMouseEnter={() => setActiveProject(index)}
+                    onMouseLeave={() => setActiveProject(null)}
+                >
+                    <div className="transition-transform duration-500 group-hover:translate-x-4">
+                        <h3 className="text-3xl md:text-5xl font-bold font-display group-hover:text-white/50 transition-colors">
+                            {project.title}
+                        </h3>
+                        <p className="text-sm md:text-base text-white/40 mt-2 font-mono">
+                            {project.category}
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-8 mt-4 md:mt-0 transition-transform duration-500 group-hover:-translate-x-4">
+                        <span className="text-white/20 font-mono hidden md:block">{project.year}</span>
+                        <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                            <ArrowUpRight className="w-5 h-5" />
+                        </div>
+                    </div>
+                </Link>
+            ))}
         </div>
       </div>
+
+      {/* Floating Image Portal */}
+      <motion.div
+        style={{ x, y }}
+        className="fixed top-0 left-0 w-[400px] h-[300px] pointer-events-none z-50 hidden md:block overflow-hidden rounded-lg mix-blend-normal"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ 
+            opacity: activeProject !== null ? 1 : 0,
+            scale: activeProject !== null ? 1 : 0.8,
+            x: "-50%",
+            y: "-50%"
+        }}
+        transition={{ duration: 0.2 }}
+      >
+        {projects.map((project, index) => (
+            <div 
+                key={index}
+                className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${activeProject === index ? "opacity-100" : "opacity-0"}`}
+            >
+                <img /* Using img for instant WebGL texture feel/avoiding next/image loading lag on rapid hover */
+                    src={project.src} 
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                />
+            </div>
+        ))}
+      </motion.div>
+
     </section>
   );
 }

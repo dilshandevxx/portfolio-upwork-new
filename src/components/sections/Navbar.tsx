@@ -1,96 +1,92 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-
-const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#features" },
-  { name: "Work", href: "#projects" },
-  { name: "Process", href: "#process" },
-];
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false); 
+    }
+  });
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-transparent",
-        isScrolled ? "bg-background/80 backdrop-blur-md border-white/10 py-3" : "py-5"
-      )}
+    <motion.header
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className="fixed top-0 inset-x-0 z-50 px-6 py-4 md:py-6"
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold font-display tracking-tight hover:opacity-80 transition-opacity">
-          SPARKS<span className="text-accent">.</span>
+      <nav className="relative flex items-center justify-between max-w-[1440px] mx-auto bg-black/50 backdrop-blur-md rounded-full px-6 py-3 border border-white/5 shadow-2xl shadow-black/50">
+        
+        {/* Logo */}
+        <Link href="/" className="text-xl font-display font-bold tracking-tight z-50">
+          SPARKS.
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-sm font-medium text-white/70 hover:text-white transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden md:flex items-center gap-4">
-          <Button variant="outline" size="sm" className="hidden lg:flex">
-            Let's Talk
-          </Button>
+        <div className="hidden md:flex items-center gap-8">
+            {["Work", "Info", "Contact"].map((item) => (
+                <Link 
+                    key={item} 
+                    href={`#${item.toLowerCase()}`}
+                    className="text-sm font-mono uppercase tracking-widest text-white/60 hover:text-white transition-colors"
+                >
+                    {item}
+                </Link>
+            ))}
         </div>
 
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-white"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+        {/* CTA Button */}
+        <div className="hidden md:block">
+            <Button variant="outline" className="rounded-full px-6 text-xs font-mono uppercase tracking-wider h-9 border-white/20 hover:bg-white hover:text-black transition-all">
+                Let's Talk
+            </Button>
+        </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-white/10 overflow-hidden"
-          >
-            <div className="flex flex-col p-6 gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-lg font-medium text-white/80 hover:text-white"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <Button className="w-full mt-4">Let's Talk</Button>
-            </div>
-          </motion.div>
+        {/* Mobile Menu Toggle */}
+        <button 
+            className="md:hidden z-50 text-white"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Mobile Menu Overlay */}
+        {mobileMenuOpen && (
+            <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="absolute top-full left-0 right-0 mt-4 bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 flex flex-col gap-6 md:hidden shadow-2xl"
+            >
+                {["Work", "Info", "Contact"].map((item) => (
+                    <Link 
+                        key={item} 
+                        href={`#${item.toLowerCase()}`}
+                        className="text-lg font-display font-medium text-white/80 hover:text-white"
+                        onClick={() => setMobileMenuOpen(false)}
+                    >
+                        {item}
+                    </Link>
+                ))}
+            </motion.div>
         )}
-      </AnimatePresence>
-    </header>
+
+      </nav>
+    </motion.header>
   );
 }

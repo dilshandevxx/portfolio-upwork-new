@@ -166,8 +166,8 @@ const Simulation = () => {
     return new THREE.ShaderMaterial({
       uniforms: {
         uTexture: { value: null },
-        uColor1: { value: new THREE.Color("#080808") }, // Slightly Brighter
-        uColor2: { value: new THREE.Color("#151515") }, // Slightly Brighter
+        uColor1: { value: new THREE.Color("#020410") }, // Deep Blue/Black
+        uColor2: { value: new THREE.Color("#0f172a") }, // Dark Slate Blue tint
       },
       vertexShader: renderVertexShader,
       fragmentShader: renderFragmentShader,
