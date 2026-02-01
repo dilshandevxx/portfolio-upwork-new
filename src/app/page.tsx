@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/sections/Navbar";
-import { Hero } from "@/components/sections/Hero";
+import { LensHero } from "@/components/sections/LensHero";
 import { TechStack } from "@/components/sections/TechStack";
 import { Features } from "@/components/sections/Features";
 import { Projects } from "@/components/sections/Projects";
@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <main className="relative bg-background text-foreground selection:bg-accent/30">
       <Navbar />
-      <Hero />
+      <LensHero />
       <TechStack />
       <Features />
       <Projects />
