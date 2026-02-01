@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -66,25 +66,37 @@ export function Navbar() {
         </button>
 
         {/* Mobile Menu Overlay */}
-        {mobileMenuOpen && (
-            <motion.div 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="absolute top-full left-0 right-0 mt-4 bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 flex flex-col gap-6 md:hidden shadow-2xl"
-            >
-                {["Work", "Info", "Contact"].map((item) => (
-                    <Link 
-                        key={item} 
-                        href={`#${item.toLowerCase()}`}
-                        className="text-lg font-display font-medium text-white/80 hover:text-white"
-                        onClick={() => setMobileMenuOpen(false)}
-                    >
-                        {item}
-                    </Link>
-                ))}
-            </motion.div>
-        )}
+        <AnimatePresence>
+            {mobileMenuOpen && (
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col justify-center items-center md:hidden"
+                >
+                    <div className="flex flex-col gap-8 text-center">
+                        {["Work", "Info", "Contact"].map((item, i) => (
+                            <motion.div
+                                key={item}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                transition={{ delay: 0.1 + i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                            >
+                                <Link 
+                                    href={`#${item.toLowerCase()}`}
+                                    className="text-5xl font-display font-medium text-white hover:text-white/50 transition-colors"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    {item}
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
 
       </nav>
     </motion.header>

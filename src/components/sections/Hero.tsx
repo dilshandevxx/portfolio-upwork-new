@@ -48,7 +48,7 @@ export function Hero() {
                 DILSHAD WORK
               </motion.span>
               
-              <h1 className="text-[11vw] leading-[0.8] font-bold font-sans tracking-tighter uppercase whitespace-pre-wrap -ml-1 md:-ml-2">
+              <h1 className="text-[13vw] md:text-[11vw] leading-[0.8] font-bold font-sans tracking-tighter uppercase whitespace-pre-wrap -ml-1 md:-ml-2">
                  <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ duration: 1, ease: [0.76, 0, 0.24, 1] }} className="overflow-hidden">
                     DEVELOPER
                  </motion.div>
@@ -56,7 +56,7 @@ export function Hero() {
           </div>
 
           {/* Right Column: Nav & Info */}
-          <div className="md:col-span-4 flex flex-col justify-between h-full min-h-[200px] md:min-h-[300px] md:pl-8 border-l border-white/5">
+          <div className="md:col-span-4 flex flex-col justify-between h-full min-h-[150px] md:min-h-[300px] md:pl-8 border-l-0 md:border-l border-white/5 pt-8 md:pt-0">
               {/* Navigation */}
               <div className="flex justify-between items-start text-xs md:text-sm font-mono uppercase tracking-wider w-full">
                   <span className="text-cyan-400 cursor-pointer">[ WORK ]</span>

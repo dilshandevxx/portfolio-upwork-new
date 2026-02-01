@@ -20,9 +20,9 @@ const testimonials = [
     role: "Founder"
   },
   {
-      quote: "A masterclass in modern web design. Our traffic increased by 40% after the redesign.",
-      author: "Client D",
-      role: "Product Manager"
+    quote: "A masterclass in modern web design. Our traffic increased by 40% after the redesign.",
+    author: "Client D",
+    role: "Product Manager"
   }
 ];
 
@@ -52,10 +52,10 @@ export function Testimonials() {
           {[...testimonials, ...testimonials].map((t, index) => (
             <div
                key={index}
-               className="w-[400px] flex-shrink-0 p-10 rounded-3xl bg-white/5 border border-white/5 relative flex flex-col justify-between group hover:bg-white/10 transition-colors"
+               className="w-[85vw] md:w-[400px] flex-shrink-0 p-8 md:p-10 rounded-3xl bg-white/5 border border-white/5 relative flex flex-col justify-between group hover:bg-white/10 transition-colors"
             >
                <Quote className="text-white/20 mb-6 w-8 h-8" />
-              <p className="text-xl font-display text-white/90 mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl font-display text-white/90 mb-8 leading-relaxed">
                   "{t.quote}"
               </p>
               <div className="flex items-center gap-4">

@@ -81,21 +81,37 @@ export function Projects() {
                 <Link 
                     key={index} 
                     href={project.href}
-                    className="group border-b border-white/5 py-12 flex flex-col md:flex-row justify-between items-start md:items-center cursor-none"
+                    className="group border-b border-white/5 py-8 md:py-12 flex flex-col md:flex-row justify-between items-start md:items-center cursor-none"
                     onMouseEnter={() => setActiveProject(index)}
                     onMouseLeave={() => setActiveProject(null)}
                 >
-                    <div className="transition-transform duration-500 group-hover:translate-x-4">
-                        <h3 className="text-3xl md:text-5xl font-bold font-display group-hover:text-white/50 transition-colors">
-                            {project.title}
-                        </h3>
-                        <p className="text-sm md:text-base text-white/40 mt-2 font-mono">
-                            {project.category}
-                        </p>
+                    <div className="w-full md:w-auto">
+                        <div className="flex flex-col md:block transition-transform duration-500 group-hover:translate-x-4">
+                            <h3 className="text-3xl md:text-5xl font-bold font-display group-hover:text-white/50 transition-colors">
+                                {project.title}
+                            </h3>
+                            <p className="text-sm md:text-base text-white/40 mt-2 font-mono">
+                                {project.category}
+                            </p>
+                        </div>
+                        
+                        {/* Mobile Image Preview */}
+                        <div className="md:hidden w-full h-48 mt-6 relative overflow-hidden rounded-lg">
+                             <Image
+                                src={project.src}
+                                alt={project.title}
+                                fill
+                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                             />
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-8 mt-4 md:mt-0 transition-transform duration-500 group-hover:-translate-x-4">
+                    <div className="flex items-center gap-8 mt-6 md:mt-0 transition-transform duration-500 group-hover:-translate-x-4 w-full md:w-auto justify-between md:justify-start">
                         <span className="text-white/20 font-mono hidden md:block">{project.year}</span>
+                        
+                        {/* Mobile Year */}
+                        <span className="text-white/20 font-mono md:hidden block">{project.year}</span>
+
                         <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
                             <ArrowUpRight className="w-5 h-5" />
                         </div>
